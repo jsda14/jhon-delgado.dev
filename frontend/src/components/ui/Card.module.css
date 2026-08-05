@@ -1,0 +1,22 @@
+.card {
+  background-color: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--t-normal), box-shadow var(--t-normal);
+}
+
+.card--interactive {
+  cursor: pointer;
+}
+
+.card--interactive:hover {
+  border-color: var(--clr-copper-mid);
+  box-shadow: var(--shadow-copper);
+}
+
+.card--featured {
+  border-color: var(--clr-copper-mid);
+  box-shadow: var(--shadow-copper);
+}

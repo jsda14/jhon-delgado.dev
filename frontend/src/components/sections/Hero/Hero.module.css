@@ -1,0 +1,247 @@
+.hero {
+  min-height: calc(100vh - 3.75rem);
+  display: flex;
+  align-items: center;
+  padding: 4rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle grain texture on dark */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 70% 40%, var(--clr-copper-soft) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────────── */
+.hero__layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .hero__layout {
+    grid-template-columns: 1fr 320px;
+    gap: 4rem;
+  }
+}
+
+/* ── Copy (left) ───────────────────────────────────────────────────────────── */
+.hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Eyebrow / status pill */
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-copper);
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--clr-copper-mid);
+  border-radius: var(--radius-full);
+  background-color: var(--clr-copper-soft);
+  width: fit-content;
+}
+
+.hero__eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--clr-copper);
+  animation: pulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.75); }
+}
+
+/* Title */
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--clr-text);
+  font-style: normal;
+  margin: 0;
+}
+
+.hero__title-em {
+  font-style: italic;
+  color: var(--clr-copper);
+}
+
+/* Role */
+.hero__role {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--clr-text-2);
+  letter-spacing: 0.03em;
+  margin: 0;
+  max-width: none;
+}
+
+/* Subtitle */
+.hero__subtitle {
+  font-size: var(--text-lg);
+  color: var(--clr-text-2);
+  line-height: 1.6;
+  max-width: 52ch;
+  margin: 0;
+}
+
+/* Actions */
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.hero__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: transform var(--t-fast), box-shadow var(--t-fast), background-color var(--t-fast), border-color var(--t-fast);
+  border: 1px solid transparent;
+}
+
+.hero__btn:hover {
+  transform: translateY(-2px);
+}
+
+.hero__btn:active {
+  transform: translateY(0);
+}
+
+.hero__btn--primary {
+  background: var(--gradient-identity);
+  color: #fff;
+  border-color: transparent;
+}
+
+.hero__btn--primary:hover {
+  box-shadow: var(--shadow-copper);
+}
+
+.hero__btn--ghost {
+  background-color: transparent;
+  color: var(--clr-text);
+  border-color: var(--clr-border);
+}
+
+.hero__btn--ghost:hover {
+  background-color: var(--clr-surface-2);
+  border-color: var(--clr-border-2);
+  color: var(--clr-text);
+}
+
+/* Meta info */
+.hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  padding-top: 0.25rem;
+}
+
+.hero__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  color: var(--clr-text-2);
+}
+
+.hero__meta-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--clr-text-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero__meta-sep {
+  color: var(--clr-border-2);
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+
+/* ── Visual / Radar (right) ────────────────────────────────────────────────── */
+.hero__visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  justify-self: center;
+}
+
+@media (min-width: 900px) {
+  .hero__visual {
+    justify-self: end;
+  }
+}
+
+.hero__radar {
+  width: 280px;
+  height: 280px;
+  display: block;
+  opacity: 0.85;
+}
+
+@media (min-width: 900px) {
+  .hero__radar {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+.hero__visual-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-text-3);
+}
+
+.hero__visual-label-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--clr-success);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}

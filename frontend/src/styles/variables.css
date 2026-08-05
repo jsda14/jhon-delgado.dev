@@ -1,0 +1,126 @@
+/* ─── Design Tokens ──────────────────────────────────────────────────────────
+   Identity: Ingeniería de sistemas complejos con carácter propio.
+   Accent: cobre quemado — lejos del cyan/purple genérico.
+   Type: DM Serif Display (display) + DM Sans (body) + JetBrains Mono (code).
+──────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Accent (único color de identidad, invariante entre temas) */
+  --clr-copper:        #D9622B;   /* cobre quemado — el bold del diseño */
+  --clr-copper-soft:   rgba(217, 98, 43, 0.12);
+  --clr-copper-mid:    rgba(217, 98, 43, 0.25);
+  --clr-copper-glow:   rgba(217, 98, 43, 0.18);
+
+  /* ── Status colors (semánticos, no decorativos) */
+  --clr-success:       #2DB87A;
+  --clr-success-soft:  rgba(45, 184, 122, 0.12);
+  --clr-info:          #4A9ECC;
+  --clr-info-soft:     rgba(74, 158, 204, 0.12);
+
+  /* ── Typography */
+  --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  --font-body:    'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', SFMono-Regular, Consolas, monospace;
+
+  /* ── Type scale */
+  --text-xs:   0.6875rem;  /* 11px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-md:   1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px */
+  --text-2xl:  1.5rem;     /* 24px */
+  --text-3xl:  2rem;       /* 32px */
+  --text-4xl:  2.75rem;    /* 44px */
+  --text-5xl:  3.75rem;    /* 60px */
+  --text-6xl:  5rem;       /* 80px */
+
+  /* ── Spacing / geometry */
+  --radius-sm:   3px;
+  --radius-md:   6px;
+  --radius-lg:   10px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  --border-thin:  1px;
+  --border-thick: 2px;
+
+  /* ── Transitions */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --t-fast:   140ms var(--ease-in-out);
+  --t-normal: 280ms var(--ease-out);
+  --t-slow:   520ms var(--ease-out);
+}
+
+/* ─── Dark theme (default) ────────────────────────────────────────────────── */
+:root,
+:root[data-theme="dark"] {
+  --clr-bg:        #0C0E14;   /* casi-negro con sesgo índigo muy frío */
+  --clr-surface:   #13161F;   /* superficies de cards */
+  --clr-surface-2: #1C2030;   /* hover states, code bg */
+  --clr-border:    #252A3A;   /* bordes sutiles */
+  --clr-border-2:  #353C52;   /* bordes en hover */
+
+  --clr-text:      #EEF0F5;   /* texto primario con ligero sesgo frío */
+  --clr-text-2:    #8B90A8;   /* texto secundario, gris con hue azul */
+  --clr-text-3:    #525773;   /* texto apagado, muted */
+
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:     0 4px 12px rgba(0,0,0,0.5);
+  --shadow-lg:     0 12px 32px rgba(0,0,0,0.6);
+  --shadow-copper: 0 0 24px rgba(217, 98, 43, 0.2);
+
+  /* Gradiente de identidad — cobre cálido a tierra */
+  --gradient-identity: linear-gradient(135deg, #D9622B 0%, #A8441A 100%);
+  --gradient-text:     linear-gradient(to right, #EEF0F5 30%, #8B90A8 100%);
+
+  color-scheme: dark;
+}
+
+/* ─── Light theme ─────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --clr-bg:        #F4F1EB;   /* crema cálida con sesgo arena */
+    --clr-surface:   #FDFAF4;   /* cards sobre el fondo crema */
+    --clr-surface-2: #EDE9E0;   /* hover states */
+    --clr-border:    #D8D2C4;   /* bordes suaves */
+    --clr-border-2:  #B8B0A0;   /* bordes en hover */
+
+    --clr-text:      #1A1C24;   /* casi-negro con sesgo índigo mínimo */
+    --clr-text-2:    #5A5C70;   /* texto secundario */
+    --clr-text-3:    #8E8FA0;   /* texto apagado */
+
+    --shadow-sm:     0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md:     0 4px 12px rgba(0,0,0,0.1);
+    --shadow-lg:     0 12px 32px rgba(0,0,0,0.14);
+    --shadow-copper: 0 0 24px rgba(217, 98, 43, 0.15);
+
+    --gradient-identity: linear-gradient(135deg, #D9622B 0%, #A8441A 100%);
+    --gradient-text:     linear-gradient(to right, #1A1C24 30%, #5A5C70 100%);
+
+    color-scheme: light;
+  }
+}
+
+:root[data-theme="light"] {
+  --clr-bg:        #F4F1EB;
+  --clr-surface:   #FDFAF4;
+  --clr-surface-2: #EDE9E0;
+  --clr-border:    #D8D2C4;
+  --clr-border-2:  #B8B0A0;
+
+  --clr-text:      #1A1C24;
+  --clr-text-2:    #5A5C70;
+  --clr-text-3:    #8E8FA0;
+
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:     0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg:     0 12px 32px rgba(0,0,0,0.14);
+  --shadow-copper: 0 0 24px rgba(217, 98, 43, 0.15);
+
+  --gradient-identity: linear-gradient(135deg, #D9622B 0%, #A8441A 100%);
+  --gradient-text:     linear-gradient(to right, #1A1C24 30%, #5A5C70 100%);
+
+  color-scheme: light;
+}

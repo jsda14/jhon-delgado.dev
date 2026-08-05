@@ -1,0 +1,61 @@
+.workflow-banner {
+  padding: 0 0 2rem;
+}
+
+.workflow-banner__content {
+  border: 1px solid var(--clr-border);
+  border-left: 3px solid var(--clr-copper);
+  background-color: var(--clr-surface);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--t-normal), box-shadow var(--t-normal);
+}
+
+.workflow-banner__content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, var(--clr-copper-soft) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.workflow-banner__content:hover {
+  border-color: var(--clr-copper-mid);
+  box-shadow: var(--shadow-copper);
+}
+
+.workflow-banner__title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--clr-copper);
+}
+
+.workflow-banner__title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--clr-text);
+}
+
+.workflow-banner__desc {
+  font-size: var(--text-sm);
+  color: var(--clr-text-2);
+  line-height: 1.65;
+  margin: 0;
+  max-width: none;
+}
+
+.workflow-banner__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}

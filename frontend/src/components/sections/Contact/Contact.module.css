@@ -1,0 +1,115 @@
+.contact {
+  padding: 6rem 0;
+}
+
+.contact__header {
+  margin-bottom: 3.5rem;
+}
+
+.contact__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-copper);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.contact__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-4xl);
+  color: var(--clr-text);
+  line-height: 1.1;
+  margin: 0 0 0.75rem;
+}
+
+.contact__subtitle {
+  font-size: var(--text-lg);
+  color: var(--clr-text-2);
+  max-width: 48ch;
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 576px) {
+  .contact__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .contact__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────────── */
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background-color: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: var(--clr-text);
+  transition: border-color var(--t-normal), box-shadow var(--t-normal), transform var(--t-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-identity);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-normal);
+}
+
+.contact-card:hover {
+  border-color: var(--clr-border-2);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  color: var(--clr-text);
+}
+
+.contact-card:hover::after {
+  transform: scaleX(1);
+}
+
+.contact-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-copper);
+  margin-bottom: 0.25rem;
+}
+
+.contact-card__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--clr-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.contact-card__value {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--clr-text);
+  word-break: break-all;
+  line-height: 1.4;
+}
