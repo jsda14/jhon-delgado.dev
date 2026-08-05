@@ -21,7 +21,6 @@ import { techStack } from '@/data/stack';
 import Container from '@/components/layout/Container';
 import styles from './Stack.module.css';
 
-// Dynamic Icon Mapper helper
 const iconMap: Record<string, LucideIcon> = {
   React: Layers,
   FileCode2: FileCode2,
@@ -43,7 +42,7 @@ const iconMap: Record<string, LucideIcon> = {
 export function Stack() {
   const shouldReduceMotion = useReducedMotion();
 
-  const categories = [
+  const groups = [
     { key: 'frontend', title: 'Frontend Development' },
     { key: 'backend-ai', title: 'IA & Backend Integration' },
     { key: 'cloud', title: 'Cloud & DevOps' },
@@ -53,31 +52,35 @@ export function Stack() {
   return (
     <section id="stack" className={styles.stack}>
       <Container>
-        <h2>Stack Tecnológico</h2>
-        <p>Herramientas y metodologías que utilizo para materializar soluciones digitales de alto nivel.</p>
+        <h2 className={styles.stack__title}>Ecosistema & Tech Stack</h2>
+        <p style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          Las tecnologías, frameworks y metodologías en las que me especializo.
+        </p>
 
-        <div className={styles.stack__categories}>
-          {categories.map((cat) => {
-            const skills = techStack.filter(skill => skill.category === cat.key);
+        <div className={styles.stack__grid}>
+          {groups.map((group) => {
+            const skills = techStack.filter(skill => skill.category === group.key);
             return (
-              <div key={cat.key} className={styles.stack__category}>
-                <h3 className={styles['stack__category-title']}>{cat.title}</h3>
-                <div className={styles.stack__grid}>
+              <div key={group.key} className={styles['stack-group']}>
+                <h3 className={styles['stack-group__title']}>{group.title}</h3>
+                <ul className={styles['stack-group__list']}>
                   {skills.map((skill) => {
                     const IconComponent = iconMap[skill.iconName || 'Terminal'] || Terminal;
                     return (
-                      <div key={skill.id} className={styles.stack__item}>
-                        <div className={styles['stack__item-icon-wrapper']}>
-                          <IconComponent size={20} />
+                      <li key={skill.id} className={styles['stack-item']}>
+                        <div className={styles['stack-item__icon']}>
+                          <IconComponent size={18} />
                         </div>
-                        <div className={styles['stack__item-details']}>
-                          <div className={styles['stack__item-header']}>
-                            <span className={styles['stack__item-name']}>{skill.name}</span>
-                            <span className={styles['stack__item-percent']}>{skill.level}%</span>
+                        <div className={styles['stack-item__details']}>
+                          <div className={styles['stack-item__header']}>
+                            <span className={styles['stack-item__name']}>{skill.name}</span>
+                            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
+                              {skill.level}%
+                            </span>
                           </div>
-                          <div className={styles['stack__item-level-bar']}>
+                          <div className={styles['stack-item__level-bar']}>
                             <motion.div
-                              className={styles['stack__item-level-fill']}
+                              className={styles['stack-item__level-fill']}
                               initial={{ width: 0 }}
                               whileInView={{ width: `${skill.level}%` }}
                               viewport={{ once: true }}
@@ -85,10 +88,10 @@ export function Stack() {
                             />
                           </div>
                         </div>
-                      </div>
+                      </li>
                     );
                   })}
-                </div>
+                </ul>
               </div>
             );
           })}
@@ -97,4 +100,5 @@ export function Stack() {
     </section>
   );
 }
+
 export default Stack;

@@ -18,6 +18,7 @@ export const projects: Project[] = [
    'CSS Modules'
   ],
   featured: true,
+  liveUrl: 'https://aluna-tyquy.vercel.app/',
   highlights: [
    'Motor financiero SQL defensivo que separa ingresos netos del recaudo de domicilios.',
    'Chatbot IA conversacional con Gemini API y control de acceso RBAC (Admin, Repartidor, Cliente) vía magic links.',
@@ -48,6 +49,7 @@ export const projects: Project[] = [
    'CSS Modules'
   ],
   featured: true,
+  liveUrl: 'https://platinum-center.vercel.app/',
   highlights: [
    'Integración hardware de control de acceso ZKTeco inBio Pro vía protocolo iClock/ADMS.',
    'Revocación automática de acceso en tiempo real al vencer planes utilizando pg_cron en Railway.',

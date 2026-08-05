@@ -3,7 +3,14 @@
   border-top: var(--border-width-thin) solid var(--color-bg-tertiary);
 }
 
-.stack__categories {
+.stack__title {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.stack__grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
@@ -11,19 +18,19 @@
 }
 
 @media (min-width: 768px) {
-  .stack__categories {
+  .stack__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.stack__category {
+.stack-group {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
-.stack__category-title {
-  font-size: var(--text-lg);
+.stack-group__title {
+  font-size: var(--text-md);
   font-family: var(--font-mono);
   color: var(--color-accent-indigo);
   border-bottom: 1px solid var(--color-bg-tertiary);
@@ -32,16 +39,18 @@
   letter-spacing: 0.05em;
 }
 
-.stack__grid {
+.stack-group__list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
+  list-style: none;
+  padding-left: 0;
 }
 
-.stack__item {
+.stack-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 0.75rem 1rem;
   background-color: var(--color-bg-secondary);
   border: var(--border-width-thin) solid var(--color-bg-tertiary);
@@ -49,47 +58,42 @@
   transition: border-color var(--transition-fast);
 }
 
-.stack__item:hover {
+.stack-item:hover {
   border-color: var(--color-accent-blue);
 }
 
-.stack__item-icon-wrapper {
+.stack-item__icon {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-accent-blue);
 }
 
-.stack__item-details {
+.stack-item__details {
   flex-grow: 1;
 }
 
-.stack__item-header {
+.stack-item__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.25rem;
 }
 
-.stack__item-name {
+.stack-item__name {
   font-size: var(--text-sm);
   font-weight: 500;
+  color: var(--color-text-primary);
 }
 
-.stack__item-percent {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-}
-
-.stack__item-level-bar {
+.stack-item__level-bar {
   height: 4px;
   background-color: var(--color-bg-tertiary);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
-.stack__item-level-fill {
+.stack-item__level-fill {
   height: 100%;
   background: var(--gradient-primary);
   border-radius: var(--radius-full);

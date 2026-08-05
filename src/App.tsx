@@ -2,10 +2,10 @@ import React from 'react';
 import Navbar from '@/components/layout/Navbar/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero/Hero';
-import Projects from '@/components/sections/Projects';
-import Experience from '@/components/sections/Experience';
-import Stack from '@/components/sections/Stack';
-import AIWorkflow from '@/components/sections/AIWorkflow';
+import AIWorkflow from '@/components/sections/AIWorkflow/AIWorkflow';
+import Projects from '@/components/sections/Projects/Projects';
+import Experience from '@/components/sections/Experience/Experience';
+import Stack from '@/components/sections/Stack/Stack';
 import AIChatWidget from '@/components/widgets/AIChatWidget';
 
 export function App() {
@@ -14,10 +14,10 @@ export function App() {
       <Navbar />
       <main>
         <Hero />
+        <AIWorkflow />
         <Projects />
         <Experience />
         <Stack />
-        <AIWorkflow />
       </main>
       <Footer />
       <AIChatWidget />
