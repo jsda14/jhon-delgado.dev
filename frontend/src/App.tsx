@@ -7,7 +7,7 @@ import Projects from '@/components/sections/Projects/Projects';
 import Experience from '@/components/sections/Experience/Experience';
 import Stack from '@/components/sections/Stack/Stack';
 import Contact from '@/components/sections/Contact/Contact';
-import AIChatWidget from '@/components/widgets/AIChatWidget';
+import AIChatWidget from '@/components/widgets/AIChatWidget/AIChatWidget';
 
 export function App() {
   return (
