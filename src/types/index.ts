@@ -23,6 +23,7 @@ export interface ExperienceItem {
   description: string;
   achievements: string[];
   technologies: string[];
+  location: string;
   companyUrl?: string;
 }
 

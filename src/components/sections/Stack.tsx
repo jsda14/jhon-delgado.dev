@@ -14,9 +14,9 @@ import {
   GitBranch,
   Wrench,
   Accessibility,
-  CheckCircle,
-  LucideIcon
+  CheckCircle
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { techStack } from '@/data/stack';
 import Container from '@/components/layout/Container';
 import styles from './Stack.module.css';

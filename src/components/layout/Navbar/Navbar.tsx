@@ -1,6 +1,6 @@
 import React from 'react';
 import { Terminal } from 'lucide-react';
-import Container from './Container';
+import Container from '@/components/layout/Container';
 import styles from './Navbar.module.css';
 
 export function Navbar() {
@@ -13,17 +13,17 @@ export function Navbar() {
         </a>
         <nav>
           <ul className={styles.navbar__menu}>
-            <li>
+            <li className={styles.navbar__item}>
               <a href="#projects" className={styles.navbar__link}>Proyectos</a>
             </li>
-            <li>
+            <li className={styles.navbar__item}>
               <a href="#experience" className={styles.navbar__link}>Experiencia</a>
             </li>
-            <li>
-              <a href="#stack" className={styles.navbar__link}>Tecnologías</a>
+            <li className={styles.navbar__item}>
+              <a href="#stack" className={styles.navbar__link}>Stack</a>
             </li>
-            <li>
-              <a href="#ai-workflow" className={styles.navbar__link}>Gobernanza IA</a>
+            <li className={styles.navbar__item}>
+              <a href="#contacto" className={styles.navbar__link}>Contacto</a>
             </li>
           </ul>
         </nav>
@@ -31,4 +31,5 @@ export function Navbar() {
     </header>
   );
 }
+
 export default Navbar;
