@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, Sparkles } from 'lucide-react';
 import clsx from 'clsx';
+import ReactMarkdown from 'react-markdown';
 import { useAIChat } from '@/hooks/useAIChat';
 import styles from './AIChatWidget.module.css';
 
@@ -116,7 +117,11 @@ export function AIChatWidget() {
                       : styles['chat-widget__message--assistant']
                   )}
                 >
-                  {msg.text}
+                  {msg.sender === 'assistant' ? (
+                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  ) : (
+                    msg.text
+                  )}
                 </div>
               ))}
               {isLoading && (
