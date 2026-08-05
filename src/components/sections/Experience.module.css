@@ -1,0 +1,116 @@
+.experience {
+  padding: 5rem 0;
+  border-top: var(--border-width-thin) solid var(--color-bg-tertiary);
+}
+
+.experience__timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 3rem auto 0 auto;
+  padding-left: 2rem;
+}
+
+.experience__timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--color-bg-tertiary);
+}
+
+.experience__item {
+  position: relative;
+  margin-bottom: 3.5rem;
+}
+
+.experience__item:last-child {
+  margin-bottom: 0;
+}
+
+.experience__item-marker {
+  position: absolute;
+  left: -2rem;
+  top: 0.25rem;
+  transform: translateX(-50%);
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-primary);
+  border: var(--border-width-thick) solid var(--color-accent-blue);
+  z-index: 10;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.experience__item:hover .experience__item-marker {
+  transform: translateX(-50%) scale(1.2);
+  background-color: var(--color-accent-indigo);
+}
+
+.experience__item-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+  .experience__item-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+}
+
+.experience__item-role {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.experience__item-company {
+  color: var(--color-accent-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.experience__item-period {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.experience__item-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.experience__item-achievements {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+
+.experience__item-achievement {
+  position: relative;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.experience__item-achievement::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent-indigo);
+}
+
+.experience__item-techs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

@@ -1,0 +1,22 @@
+.card {
+  background-color: var(--color-bg-secondary);
+  border: var(--border-width-thin) solid var(--color-bg-tertiary);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.card--interactive {
+  cursor: pointer;
+}
+
+.card--interactive:hover {
+  border-color: var(--color-accent-indigo);
+  box-shadow: var(--shadow-accent-indigo);
+}
+
+.card--featured {
+  border-color: var(--color-accent-blue);
+  box-shadow: var(--shadow-accent-blue);
+}

@@ -1,146 +1,125 @@
-# Guía de Estilos y Sistema de Diseño (Tailwind v4 & Framer Motion)
+# Guía de Estilos y Sistema de Diseño (CSS Modules, BEM & Framer Motion)
 
-Este documento establece las especificaciones estéticas, tokens de diseño y reglas de animación. El portafolio debe presentar un aspecto premium, limpio y de alto impacto, inspirado en la estética de Vercel, Linear y Shadcn UI.
-
----
-
-## 1. Tokens de Diseño y Paleta de Colores (Dark Theme)
-
-El diseño del portafolio se centrará principalmente en un **Tema Oscuro** de alta gama, que reduce la fatiga visual y proyecta un ambiente tecnológico profesional.
-
-### 1.1 Colores Base y Superficies
-* **Background Primario:** Slate 950 (`#020617`) o Zinc 950 (`#09090b`). Ofrece un fondo negro profundo satinado.
-* **Background Secundario / Contenedores:** Slate 900 (`#0f172a`) o Zinc 900 (`#18181b`) con bordes sutiles en Zinc 800 (`#27272a`).
-* **Texto Primario:** Slate 50 / Zinc 50 (`#f8fafc` / `#fafafa`). Máxima claridad para títulos y contenido de alta relevancia.
-* **Texto Secundario / Cuerpo:** Slate 400 / Zinc 400 (`#94a3b8` / `#a1a1aa`). Legible pero atenuado para jerarquía visual.
-* **Texto Mutado:** Slate 500 / Zinc 500. Reservado para fechas, descripciones secundarias y meta-información.
-
-### 1.2 Colores de Acento (Semántica e Interacción)
-* **Neon Blue / Cyan (Acento Interactivo):** `#06b6d4` o `#38bdf8`. Para enlaces importantes, llamadas a la acción primarias e iluminaciones en hover.
-* **Indigo / Violet (Acento Secundario):** `#6366f1` o `#8b5cf6`. Para degradados de branding o badges de especialización.
-* **Emerald (Status Activo / Éxito):** `#10b981`. Para indicar proyectos en producción, estado disponible para contratación ("Open to Work") o éxitos del formulario.
-* **Amber / Rose (Alertas / Errores):** `#f59e0b` / `#f43f5e`. Para warnings o errores de validación.
+Este documento establece las especificaciones estéticas, tokens de diseño y reglas de animación del portafolio. Toda la arquitectura de estilos se implementará utilizando **CSS Modules** con la metodología **BEM (Block Element Modifier)** súper estricta, prescindiendo totalmente de Tailwind CSS.
 
 ---
 
-## 2. Tipografía y Jerarquía Visual
+## 1. Metodología BEM Súper Estricta
 
-* **Familia Tipográfica:** Utilizaremos fuentes sans-serif de grado técnico. Se recomienda usar **Geist**, **Inter**, u **Outfit** para el cuerpo de la web, y **Geist Mono** o **Fira Code** para fragmentos de código u elementos técnicos.
-* **Escala de Tamaños:**
-  * `text-xs`: 0.75rem / 12px (Metadatos, tags)
-  * `text-sm`: 0.875rem / 14px (Textos de tarjetas, navegación, párrafos secundarios)
-  * `text-base`: 1rem / 16px (Párrafos principales, texto de lectura)
-  * `text-lg`: 1.125rem / 18px (Subtítulos pequeños, títulos de tarjeta)
-  * `text-xl` a `text-2xl`: Títulos de secciones secundarias.
-  * `text-4xl` a `text-6xl`: Títulos principales del héroe (Hero Titles).
+Para mantener estilos predecibles, evitar colisiones globales y estructurar clases legibles, se impone el uso de la convención de nomenclatura BEM junto con CSS Modules.
 
----
+### 1.1 Reglas de Nomenclatura
+* **Bloque (`.bloque`):** Representa el componente de nivel superior.
+  * *Ejemplo:* `.tarjeta`, `.proyecto-tarjeta`, `.boton`
+* **Elemento (`.bloque__elemento`):** Una parte interna del bloque que no tiene significado autónomo. Se une con doble guion bajo (`__`).
+  * *Ejemplo:* `.tarjeta__titulo`, `.proyecto-tarjeta__contenedor-imagen`, `.boton__icono`
+* **Modificador (`.bloque--modificador` o `.bloque__elemento--modificador`):** Define variaciones en el aspecto o comportamiento de un bloque o elemento. Se une con doble guion medio (`--`).
+  * *Ejemplo:* `.tarjeta--destacada`, `.boton--secundario`, `.boton__icono--rotado`
 
-## 3. Convenciones de Tailwind CSS (v4) y Combinación de Clases
-
-Para construir interfaces con Tailwind de forma dinámica e impecable, utilizaremos utilidades que combinen y resuelvan clases dinámicas.
-
-### 3.1 Helper `cn()`
-* **Regla:** Queda prohibida la concatenación cruda de cadenas de texto de Tailwind cuando involucre condiciones.
-* **Solución:** Utilizar el helper `cn()` que une `clsx` y `tailwind-merge` para resolver colisiones de clases en componentes reutilizables.
+### 1.2 Integración con CSS Modules
+* Todos los componentes deben usar archivos `.module.css`.
+* Las clases BEM se definen en el archivo `.module.css` y se inyectan en el componente React como propiedades del objeto importado `styles`.
+* Para combinar clases dinámicas (como modificadores condicionales) se utilizará la librería `clsx`.
 
 ```typescript
-// @/utils/cn.ts
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]): string {
-  return twMerge(clsx(inputs));
-}
-```
-
-* **Ejemplo de uso en componente:**
-
-```typescript
-interface CardProps {
-  className?: string;
-  active?: boolean;
+// ❌ INCORRECTO: Estilos directos globales o sin convención BEM
+import './Tarjeta.css';
+export function Tarjeta({ esDestacada }) {
+  return <div className={`tarjeta ${esDestacada ? 'destacada' : ''}`}>...</div>;
 }
 
-export function Card({ className, active }: CardProps) {
+//  CORRECTO: CSS Modules con BEM y clsx
+import styles from './Tarjeta.module.css';
+import clsx from 'clsx';
+
+interface TarjetaProps {
+  esDestacada?: boolean;
+}
+
+export function Tarjeta({ esDestacada }: TarjetaProps) {
   return (
-    <div
-      className={cn(
-        "p-6 rounded-xl border border-slate-800 bg-slate-900/50 text-slate-100 transition-all",
-        active && "border-indigo-500 shadow-lg shadow-indigo-500/10",
-        className
-      )}
-    >
-      ...
+    <div className={clsx(styles.tarjeta, esDestacada && styles['tarjeta--destacada'])}>
+      <h3 className={styles.tarjeta__titulo}>Título de la Tarjeta</h3>
+      <p className={styles.tarjeta__descripcion}>Cuerpo de texto...</p>
     </div>
   );
 }
 ```
 
+### 1.3 Reglas de Anidamiento de CSS
+* Con CSS Modules no es necesario anidar selectores de forma excesiva.
+* **Límite de Anidamiento:** Máximo 1 nivel de anidamiento para pseudo-clases o estados (`:hover`, `:focus`, `:active`, `::before`) o selectores de contexto específicos. Evita anidar selectores de clase (ej. `.tarjeta .tarjeta__titulo`) porque CSS Modules ya garantiza la unicidad.
+
 ---
 
-## 4. Animaciones y Micro-Interacciones con Framer Motion
+## 2. Design Tokens y CSS Variables (`src/styles/variables.css`)
 
-Las animaciones deben complementar la UX del sitio, no distraer ni sobrecargar el hardware (CPU/GPU) del cliente.
+Todos los valores de diseño (colores, fuentes, espaciados, bordes) deben definirse como variables CSS globales dentro del pseudo-selector `:root`.
 
-### 4.1 Principios de Animación Premium
-* **Menos es Más:** Las transiciones deben durar entre 150ms y 300ms. Evita rebotes exagerados o demoras prolongadas en la carga visual.
-* **Estética del Movimiento:** Utiliza funciones de easing físicas como `easeOut` o curvas bézier suaves (`[0.16, 1, 0.3, 1]`) en lugar de `linear`.
-* **Hardware Acceleration:** Anima únicamente propiedades que activen la GPU: `opacity`, `transform` (utilizando `scale`, `x`, `y`, `rotate`). Evita animar `width`, `height`, `margin` o `top`/`left`, ya que disparan re-layouts pesados.
+### 2.1 Colores (Dark Theme Premium)
+* **Fondo Primario:** `--color-bg-primary: #020617;` (Slate 950)
+* **Fondo Secundario:** `--color-bg-secondary: #0f172a;` (Slate 900)
+* **Fondo Terciario / Bordes:** `--color-bg-border: #1e293b;` (Slate 800)
+* **Texto Primario:** `--color-text-primary: #f8fafc;` (Slate 50)
+* **Texto Secundario:** `--color-text-secondary: #94a3b8;` (Slate 400)
+* **Texto Mutado:** `--color-text-muted: #64748b;` (Slate 500)
+* **Acento Neon Blue:** `--color-accent-blue: #06b6d4;` (Neon Blue)
+* **Acento Indigo:** `--color-accent-indigo: #6366f1;` (Indigo)
+* **Acento Emerald (Status):** `--color-status-success: #10b981;` (Emerald)
 
-### 4.2 Ejemplos Prácticos de Animación
-* **Fade-In con Desplazamiento (Carga de Secciones):**
+### 2.2 Escala Tipográfica (Estilo Técnico)
+* `--font-primary: 'Inter', -apple-system, sans-serif;`
+* `--font-mono: 'Fira Code', 'Geist Mono', monospace;`
+* `--text-xs: 0.75rem;`
+* `--text-sm: 0.875rem;`
+* `--text-md: 1rem;`
+* `--text-lg: 1.125rem;`
+* `--text-xl: 1.25rem;`
+* `--text-2xl: 1.5rem;`
+* `--text-3xl: 1.875rem;`
+* `--text-4xl: 2.25rem;`
+* `--text-5xl: 3rem;`
+
+### 2.3 Radios de Borde, Sombras y Transiciones
+* `--radius-sm: 4px;`
+* `--radius-md: 8px;`
+* `--radius-lg: 12px;`
+* `--radius-full: 9999px;`
+* `--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);`
+* `--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);`
+* `--shadow-accent-indigo: 0 10px 15px -3px rgba(99, 102, 241, 0.15);`
+* `--transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);`
+* `--transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);`
+
+---
+
+## 3. Animaciones con Framer Motion y Accesibilidad
+
+Las transiciones deben ser suaves y sutiles, mejorando la experiencia del portafolio interactivo.
+
+### 3.1 Integración de Animaciones
+* Utiliza los componentes `motion` de `framer-motion` para interactividad de hover, foco y scroll.
+* Respeta la preferencia `prefers-reduced-motion` utilizando el hook `useReducedMotion` de `framer-motion`.
 
 ```typescript
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import styles from './TarjetaInteractiva.module.css';
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-};
+export function TarjetaInteractiva({ children }) {
+  const shouldReduceMotion = useReducedMotion();
 
-export function Section() {
-  return (
-    <motion.section
-      variants={fadeInUp}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true, margin: "-100px" }}
-    >
-      Contenido animado suavemente al hacer scroll
-    </motion.section>
-  );
-}
-```
+  const hoverAnimation = shouldReduceMotion 
+    ? {} 
+    : { y: -4, scale: 1.02 };
 
-* **Efecto Hover Suave en Tarjetas (Micro-interacción):**
-
-```typescript
-export function ProjectCard() {
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -4 }}
+      className={styles['tarjeta-interactiva']}
+      whileHover={hoverAnimation}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="p-6 rounded-lg bg-slate-900 border border-slate-800 cursor-pointer"
     >
-      ...
+      {children}
     </motion.div>
   );
-}
-```
-
-### 4.3 Accesibilidad: Respeto a Preferencias del Usuario
-* **Regla:** Debes respetar la preferencia del usuario sobre reducción de movimiento (`prefers-reduced-motion`).
-* Si el sistema operativo del usuario tiene activada la reducción de movimiento, las transiciones complejas de Framer Motion deben desactivarse o simplificarse a un fade-in inmediato sin traslación espacial.
-
-```typescript
-import { useReducedMotion } from 'framer-motion';
-
-export function InteractiveButton() {
-  const shouldReduceMotion = useReducedMotion();
-  const hoverAnimation = shouldReduceMotion ? {} : { scale: 1.05 };
-
-  return <motion.button whileHover={hoverAnimation}>Click me</motion.button>;
 }
 ```
