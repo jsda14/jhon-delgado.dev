@@ -30,6 +30,7 @@
   bottom: 4.5rem;
   right: 0;
   width: 320px;
+  max-width: calc(100vw - 4rem);
   height: 400px;
   border-radius: var(--radius-lg);
   background-color: var(--color-bg-secondary);
