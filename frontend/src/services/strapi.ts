@@ -200,3 +200,199 @@ export async function getGovernanceData(locale: SupportedLocale = 'es-CO'): Prom
   }
 }
 
+export interface ProjectTechnology {
+  id?: string | number;
+  label: string;
+  variant: 'default' | 'primary' | 'warning' | 'success' | 'purple' | 'orange' | 'blue';
+}
+
+export interface ProjectMetric {
+  id?: string | number;
+  value: string;
+  label: string;
+}
+
+export interface Project {
+  id: string | number;
+  title: string;
+  description: string;
+  technologies: ProjectTechnology[];
+  highlights: string[];
+  metrics: ProjectMetric[];
+  demoUrl?: string;
+  demoLabel?: string;
+  githubUrl?: string;
+  featured: boolean;
+  order: number;
+}
+
+const FALLBACK_PROJECTS_DATA: Record<SupportedLocale, Project[]> = {
+  'es-CO': [
+    {
+      id: 1,
+      title: 'Aluna Tyquy',
+      description: 'Plataforma ERP y E-commerce para negocio gastronómico a escala, integrando pagos en tiempo real, control de stock automatizado y generación de reportes tributarios.',
+      technologies: [
+        { label: 'Deno Edge Functions', variant: 'purple' },
+        { label: 'Supabase', variant: 'success' },
+        { label: 'React', variant: 'blue' }
+      ],
+      highlights: [
+        'Reducción del 45% en tiempos de facturación manual',
+        'Integración fluida con pasarelas de pago y Brevo',
+        'Arquitectura Serverless optimizada en latencia edge'
+      ],
+      metrics: [
+        { value: '99.9%', label: 'Uptime' },
+        { value: '<50ms', label: 'Latencia' },
+        { value: '+15k', label: 'Transac.' }
+      ],
+      demoUrl: 'https://aluna-tyquy.vercel.app/',
+      demoLabel: 'Live Demo',
+      githubUrl: 'https://github.com/jsda14',
+      featured: true,
+      order: 1
+    },
+    {
+      id: 2,
+      title: 'Smart Gym Access Control',
+      description: 'Sistema IoT e interfaz web conectado a dispositivos de control de acceso biométrico ZKTeco inBio Pro mediante ADMS/Push SDK en red local de alta fiabilidad.',
+      technologies: [
+        { label: 'TypeScript', variant: 'blue' },
+        { label: 'Node.js', variant: 'success' },
+        { label: 'IoT ADMS', variant: 'primary' }
+      ],
+      highlights: [
+        'Conexión directa con paneles de control inBio Pro',
+        'Sincronización en tiempo real de huellas y RFID',
+        'Interfaz del administrador adaptativa y responsiva'
+      ],
+      metrics: [
+        { value: '<1s', label: 'Sinc. Acceso' },
+        { value: '500+', label: 'Usuarios Act.' },
+        { value: '100%', label: 'Local Uptime' }
+      ],
+      demoUrl: 'https://platinum-center.vercel.app/',
+      demoLabel: 'Live Demo',
+      githubUrl: 'https://github.com/jsda14',
+      featured: true,
+      order: 2
+    }
+  ],
+  en: [
+    {
+      id: 1,
+      title: 'Aluna Tyquy',
+      description: 'ERP and E-commerce platform for large-scale gastronomic business, integrating real-time payments, automated stock control, and tax report generation.',
+      technologies: [
+        { label: 'Deno Edge Functions', variant: 'purple' },
+        { label: 'Supabase', variant: 'success' },
+        { label: 'React', variant: 'blue' }
+      ],
+      highlights: [
+        '45% reduction in manual billing processing times',
+        'Seamless integration with local payment gateways and Brevo',
+        'Serverless architecture optimized for edge latency'
+      ],
+      metrics: [
+        { value: '99.9%', label: 'Uptime' },
+        { value: '<50ms', label: 'Latency' },
+        { value: '+15k', label: 'Transac.' }
+      ],
+      demoUrl: 'https://aluna-tyquy.vercel.app/',
+      demoLabel: 'Live Demo',
+      githubUrl: 'https://github.com/jsda14',
+      featured: true,
+      order: 1
+    },
+    {
+      id: 2,
+      title: 'Smart Gym Access Control',
+      description: 'IoT system and web interface connected to ZKTeco inBio Pro biometric access control devices via ADMS/Push SDK in local network.',
+      technologies: [
+        { label: 'TypeScript', variant: 'blue' },
+        { label: 'Node.js', variant: 'success' },
+        { label: 'IoT ADMS', variant: 'primary' }
+      ],
+      highlights: [
+        'Direct socket connection with inBio Pro control panels',
+        'Real-time fingerprint and RFID sync',
+        'Responsive and adaptive administrator dashboard'
+      ],
+      metrics: [
+        { value: '<1s', label: 'Access Sync' },
+        { value: '500+', label: 'Active Users' },
+        { value: '100%', label: 'Local Uptime' }
+      ],
+      demoUrl: 'https://platinum-center.vercel.app/',
+      demoLabel: 'Live Demo',
+      githubUrl: 'https://github.com/jsda14',
+      featured: true,
+      order: 2
+    }
+  ]
+};
+
+/**
+ * Obtiene los proyectos estructurados desde Strapi CMS.
+ */
+export async function getProjectsData(locale: SupportedLocale = 'es-CO'): Promise<Project[]> {
+  const strapiLocale = locale === 'es-CO' ? 'es-CO' : 'en';
+  const fallback = FALLBACK_PROJECTS_DATA[locale];
+
+  try {
+    const url = `${STRAPI_API_URL}/projects?populate=*&locale=${strapiLocale}&sort=order:asc`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.warn(`[Strapi API] No se pudo obtener datos de /projects para locale=${strapiLocale}. Usando fallback.`);
+      return fallback;
+    }
+
+    const json = await response.json();
+
+    if (!json || !json.data) {
+      console.warn(`[Strapi API] Respuesta vacía de /projects. Usando fallback.`);
+      return fallback;
+    }
+
+    // Mapear array de items de Strapi
+    return json.data.map((item: any) => {
+      const attributes = item.attributes ? item.attributes : item;
+      const id = item.id;
+      
+      // Parsear highlights de forma segura (puede venir como JSON String o como array directo)
+      let highlightsArray: string[] = [];
+      if (attributes.highlights) {
+        if (Array.isArray(attributes.highlights)) {
+          highlightsArray = attributes.highlights;
+        } else if (typeof attributes.highlights === 'string') {
+          try {
+            highlightsArray = JSON.parse(attributes.highlights);
+          } catch {
+            highlightsArray = [attributes.highlights];
+          }
+        }
+      }
+
+      return {
+        id: id,
+        title: attributes.title || '',
+        description: attributes.description || '',
+        technologies: Array.isArray(attributes.technologies) ? attributes.technologies : [],
+        highlights: highlightsArray,
+        metrics: Array.isArray(attributes.metrics) ? attributes.metrics : [],
+        demoUrl: attributes.demoUrl || undefined,
+        demoLabel: attributes.demoLabel || undefined,
+        githubUrl: attributes.githubUrl || undefined,
+        featured: typeof attributes.featured === 'boolean' ? attributes.featured : true,
+        order: typeof attributes.order === 'number' ? attributes.order : 99
+      };
+    });
+  } catch (error) {
+    console.error(`[Strapi API Error] Excepción al obtener /projects:`, error);
+    return fallback;
+  }
+}
+
+

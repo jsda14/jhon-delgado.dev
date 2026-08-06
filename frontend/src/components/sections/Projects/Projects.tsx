@@ -1,13 +1,51 @@
-
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ExternalLink, Github } from 'lucide-react';
-import { projects } from '@/data/projects';
-import { Badge } from '@/components/ui/Badge';
 import Container from '@/components/layout/Container';
+import { useLocale } from '@/context/LocaleContext';
+import { getProjectsData } from '@/services/strapi';
+import type { Project } from '@/services/strapi';
+import Tag from '@/components/common/Tag/Tag';
+import Metric from '@/components/common/Metric/Metric';
 import styles from './Projects.module.css';
 
+const TEXTS = {
+  'es-CO': {
+    eyebrow: 'Trabajo selecto',
+    title: <>Proyectos<br />Destacados</>,
+    code: 'Código',
+    demo: 'Demo'
+  },
+  en: {
+    eyebrow: 'Featured work',
+    title: <>Featured<br />Projects</>,
+    code: 'Code',
+    demo: 'Demo'
+  }
+};
+
 export function Projects() {
+  const { locale } = useLocale();
+  const [data, setData] = useState<Project[] | null>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    let isMounted = true;
+    getProjectsData(locale).then(res => {
+      if (isMounted) {
+        setData(res);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [locale]);
+
+  const projectsList = (data || [])
+    .filter(p => p.featured)
+    .sort((a, b) => a.order - b.order);
+
+  const t = TEXTS[locale] || TEXTS['es-CO'];
 
   const cardVariants = {
     hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 30 },
@@ -26,12 +64,12 @@ export function Projects() {
     <section id="proyectos" className={styles.projects}>
       <Container>
         <div className={styles.projects__header}>
-          <span className={styles.projects__eyebrow}>Trabajo selecto</span>
-          <h2 className={styles.projects__title}>Proyectos<br />Destacados</h2>
+          <span className={styles.projects__eyebrow}>{t.eyebrow}</span>
+          <h2 className={styles.projects__title}>{t.title}</h2>
         </div>
 
         <div className={styles.projects__grid}>
-          {projects.map((project, idx) => (
+          {projectsList.map((project, idx) => (
             <motion.div
               key={project.id}
               custom={idx}
@@ -44,17 +82,17 @@ export function Projects() {
               <div className={styles['project-card__header']}>
                 <h3 className={styles['project-card__title']}>{project.title}</h3>
               </div>
-              <p className={styles['project-card__desc']}>{project.detailedDescription || project.description}</p>
+              <p className={styles['project-card__desc']}>{project.description}</p>
 
               <ul className={styles['project-card__tech-list']}>
-                {project.technologies.map(tech => (
-                  <li key={tech} className={styles['project-card__tech-item']}>
-                    <Badge variant="default">{tech}</Badge>
+                {project.technologies.map((tech, tIdx) => (
+                  <li key={tech.id || tIdx} className={styles['project-card__tech-item']}>
+                    <Tag variant={tech.variant}>{tech.label}</Tag>
                   </li>
                 ))}
               </ul>
 
-              {project.highlights && (
+              {project.highlights && project.highlights.length > 0 && (
                 <ul className={styles['project-card__highlights']}>
                   {project.highlights.map((highlight, index) => (
                     <li key={index} className={styles['project-card__highlight']}>
@@ -64,13 +102,14 @@ export function Projects() {
                 </ul>
               )}
 
-              {project.metrics && (
+              {project.metrics && project.metrics.length > 0 && (
                 <div className={styles['project-card__metrics']}>
-                  {project.metrics.map(metric => (
-                    <div key={metric.label} className={styles['project-card__metric']}>
-                      <span className={styles['project-card__metric-value']}>{metric.value}</span>
-                      <span className={styles['project-card__metric-label']}>{metric.label}</span>
-                    </div>
+                  {project.metrics.map((metric, mIdx) => (
+                    <Metric
+                      key={metric.id || mIdx}
+                      value={metric.value}
+                      label={metric.label}
+                    />
                   ))}
                 </div>
               )}
@@ -84,18 +123,18 @@ export function Projects() {
                     className={styles['project-card__link']}
                   >
                     <Github size={16} />
-                    <span>Código</span>
+                    <span>{t.code}</span>
                   </a>
                 )}
-                {project.liveUrl && (
+                {project.demoUrl && (
                   <a
-                    href={project.liveUrl}
+                    href={project.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles['project-card__link']}
                   >
                     <ExternalLink size={16} />
-                    <span>Demo</span>
+                    <span>{project.demoLabel || t.demo}</span>
                   </a>
                 )}
               </div>
