@@ -130,3 +130,73 @@ export async function getHeroData(locale: SupportedLocale = 'es-CO'): Promise<He
     return fallback;
   }
 }
+
+export interface GovernanceBadge {
+  id?: string | number;
+  label: string;
+  variant: 'default' | 'primary' | 'warning' | 'success' | 'purple' | 'orange' | 'blue';
+}
+
+export interface GovernanceData {
+  title: string;
+  description: string;
+  badges: GovernanceBadge[];
+}
+
+const FALLBACK_GOVERNANCE_DATA: Record<SupportedLocale, GovernanceData> = {
+  'es-CO': {
+    title: 'AI-Native Software Engineering & Governance',
+    description: 'Este portafolio fue construido con flujos de trabajo de desarrollo asistido por agentes autónomos de IA (Agy y Claude Code), bajo dirección técnica estricta del desarrollador. Cada decisión de arquitectura, componente y estilo fue auditada, validada y aprobada por el autor — los agentes ejecutan, el ingeniero gobierna.\n\nEl stack refleja las mismas prácticas que aplico en producción: tipado estricto con TypeScript, arquitectura de componentes modular con CSS Modules y BEM, compilación limpia sin warnings, y revisión continua de calidad antes de cada commit.',
+    badges: [
+      { label: 'Agy Agent Rules', variant: 'blue' },
+      { label: 'Claude Code Audit', variant: 'primary' },
+      { label: 'Strict BEM CSS Modules', variant: 'success' }
+    ]
+  },
+  en: {
+    title: 'AI-Native Software Engineering & Governance',
+    description: 'This portfolio was built using autonomous AI agent-assisted workflows (Agy and Claude Code), under the strict technical direction of the developer. Every architectural decision, component, and style was audited, validated, and approved by the author — agents execute, the engineer governs.\n\nThe stack reflects the same practices I apply in production: strict typing with TypeScript, modular component architecture with CSS Modules and BEM, clean warning-free compilation, and continuous quality checks before every commit.',
+    badges: [
+      { label: 'Agy Agent Rules', variant: 'blue' },
+      { label: 'Claude Code Audit', variant: 'primary' },
+      { label: 'Strict BEM CSS Modules', variant: 'success' }
+    ]
+  }
+};
+
+/**
+ * Obtiene los datos de la sección Gobernanza IA estructurados desde Strapi CMS.
+ */
+export async function getGovernanceData(locale: SupportedLocale = 'es-CO'): Promise<GovernanceData> {
+  const strapiLocale = locale === 'es-CO' ? 'es-CO' : 'en';
+  const fallback = FALLBACK_GOVERNANCE_DATA[locale];
+
+  try {
+    const url = `${STRAPI_API_URL}/governance?populate=*&locale=${strapiLocale}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.warn(`[Strapi API] No se pudo obtener datos de /governance para locale=${strapiLocale}. Usando fallback.`);
+      return fallback;
+    }
+
+    const json = await response.json();
+
+    if (!json || !json.data) {
+      console.warn(`[Strapi API] Respuesta vacía de /governance. Usando fallback.`);
+      return fallback;
+    }
+
+    const attributes = json.data.attributes ? json.data.attributes : json.data;
+
+    return {
+      title: attributes.title || fallback.title,
+      description: attributes.description || fallback.description,
+      badges: Array.isArray(attributes.badges) ? attributes.badges : fallback.badges
+    };
+  } catch (error) {
+    console.error(`[Strapi API Error] Excepción al obtener /governance:`, error);
+    return fallback;
+  }
+}
+

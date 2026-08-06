@@ -3,13 +3,30 @@ import { Menu, X, Sun, Moon } from 'lucide-react';
 import clsx from 'clsx';
 import Container from '@/components/layout/Container';
 import { useTheme } from '@/hooks/useTheme';
+import { useLocale } from '@/context/LocaleContext';
 import LanguageSwitcher from '@/components/common/LanguageSwitcher/LanguageSwitcher';
 import styles from './Navbar.module.css';
+
+const NAV_ITEMS = {
+  'es-CO': [
+    { label: 'Proyectos', href: '#proyectos' },
+    { label: 'Experiencia', href: '#experiencia' },
+    { label: 'Stack', href: '#stack' },
+    { label: 'Contacto', href: '#contacto' }
+  ],
+  'en': [
+    { label: 'Projects', href: '#proyectos' },
+    { label: 'Experience', href: '#experiencia' },
+    { label: 'Stack', href: '#stack' },
+    { label: 'Contact', href: '#contacto' }
+  ]
+};
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggle } = useTheme();
+  const { locale } = useLocale();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 24);
@@ -18,6 +35,7 @@ export function Navbar() {
   }, []);
 
   const closeMenu = () => setIsOpen(false);
+  const items = NAV_ITEMS[locale] || NAV_ITEMS['es-CO'];
 
   return (
     <header className={clsx(styles.navbar, scrolled && styles['navbar--scrolled'])}>
@@ -30,14 +48,14 @@ export function Navbar() {
 
         <nav className={styles.navbar__nav} aria-label="Navegación principal">
           <ul className={clsx(styles.navbar__menu, isOpen && styles['navbar__menu--open'])}>
-            {['Proyectos', 'Experiencia', 'Stack', 'Contacto'].map((label) => (
-              <li key={label} className={styles.navbar__item}>
+            {items.map((item) => (
+              <li key={item.href} className={styles.navbar__item}>
                 <a
-                  href={`#${label.toLowerCase()}`}
+                  href={item.href}
                   className={styles.navbar__link}
                   onClick={closeMenu}
                 >
-                  {label}
+                  {item.label}
                 </a>
               </li>
             ))}
