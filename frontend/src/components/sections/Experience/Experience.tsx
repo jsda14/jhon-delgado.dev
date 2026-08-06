@@ -1,12 +1,42 @@
-
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { experiences } from '@/data/experience';
-import { Badge } from '@/components/ui/Badge';
 import Container from '@/components/layout/Container';
+import { useLocale } from '@/context/LocaleContext';
+import { getExperienceData } from '@/services/strapi';
+import type { Experience } from '@/services/strapi';
+import Tag from '@/components/common/Tag/Tag';
 import styles from './Experience.module.css';
 
+const TEXTS = {
+  'es-CO': {
+    eyebrow: '4+ años en producción',
+    title: <>Trayectoria<br />Profesional</>
+  },
+  en: {
+    eyebrow: '4+ years in production',
+    title: <>Professional<br />Experience</>
+  }
+};
+
 export function Experience() {
+  const { locale } = useLocale();
+  const [data, setData] = useState<Experience[] | null>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    let isMounted = true;
+    getExperienceData(locale).then(res => {
+      if (isMounted) {
+        setData(res);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [locale]);
+
+  const experienceList = (data || []).sort((a, b) => a.order - b.order);
+  const t = TEXTS[locale] || TEXTS['es-CO'];
 
   const itemVariants = {
     hidden: { opacity: 0, x: shouldReduceMotion ? 0 : -20 },
@@ -25,12 +55,12 @@ export function Experience() {
     <section id="experiencia" className={styles.experience}>
       <Container narrow>
         <div className={styles.experience__header}>
-          <span className={styles.experience__eyebrow}>4+ años en producción</span>
-          <h2 className={styles.experience__title}>Trayectoria<br />Profesional</h2>
+          <span className={styles.experience__eyebrow}>{t.eyebrow}</span>
+          <h2 className={styles.experience__title}>{t.title}</h2>
         </div>
 
         <div className={styles.experience__timeline}>
-          {experiences.map((exp, idx) => (
+          {experienceList.map((exp, idx) => (
             <motion.div
               key={exp.id}
               className={styles['timeline-item']}
@@ -45,18 +75,7 @@ export function Experience() {
                 <div className={styles['timeline-item__header']}>
                   <div>
                     <h3 className={styles['timeline-item__role']}>{exp.role}</h3>
-                    {exp.companyUrl ? (
-                      <a
-                        href={exp.companyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles['timeline-item__company']}
-                      >
-                        {exp.company}
-                      </a>
-                    ) : (
-                      <span className={styles['timeline-item__company']}>{exp.company}</span>
-                    )}
+                    <span className={styles['timeline-item__company']}>{exp.company}</span>
                   </div>
                   <div className={styles['timeline-item__period-group']}>
                     <span className={styles['timeline-item__period']}>{exp.period}</span>
@@ -77,8 +96,10 @@ export function Experience() {
                 </ul>
 
                 <div className={styles['timeline-item__techs']}>
-                  {exp.technologies.map(tech => (
-                    <Badge key={tech} variant="accent">{tech}</Badge>
+                  {exp.technologies.map((tech, tIdx) => (
+                    <Tag key={tech.id || tIdx} variant={tech.variant}>
+                      {tech.label}
+                    </Tag>
                   ))}
                 </div>
               </div>

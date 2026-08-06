@@ -395,4 +395,233 @@ export async function getProjectsData(locale: SupportedLocale = 'es-CO'): Promis
   }
 }
 
+export interface ExperienceTechnology {
+  id?: string | number;
+  label: string;
+  variant: 'default' | 'primary' | 'warning' | 'success' | 'purple' | 'orange' | 'blue';
+}
+
+export interface Experience {
+  id: string | number;
+  role: string;
+  company: string;
+  period: string;
+  location: string;
+  description: string;
+  achievements: string[];
+  technologies: ExperienceTechnology[];
+  order: number;
+}
+
+const FALLBACK_EXPERIENCE_DATA: Record<SupportedLocale, Experience[]> = {
+  'es-CO': [
+    {
+      id: 1,
+      company: 'Enovate',
+      role: 'Desarrollador Full-Stack Mid-Senior & Integración IA',
+      period: 'Abr 2024 - Actualidad',
+      location: 'Houston, EEUU - Remoto',
+      description: 'Liderazgo técnico y desarrollo de interfaces de alto rendimiento, dashboards analíticos industriales y plataformas de agentes autónomos con Inteligencia Artificial.',
+      achievements: [
+        'Plataforma de Agentes IA: Construcción de agentes autónomos con Vertex AI (Gemini), RAG Engine y Function Calling para consulta de datos de producción en lenguaje natural.',
+        'Dashboard Analítico Petrolero (W&T Offshore): Liderazgo de arquitectura frontend con React + ECharts para visualización de telemetría en tiempo real de pozos petroleros.',
+        'Reingeniería de Plataforma: Reestructuración de plataforma core en Angular aplicando Arquitectura Limpia (Hexagonal) para máxima scalabilidad.',
+        'Ecosistema Interno & Liderazgo: Diseño y publicación de librerías UI privadas en NPM, mentoría a desarrolladores junior/mid y definición de estándares de código.'
+      ],
+      technologies: [
+        { label: 'React', variant: 'blue' },
+        { label: 'Angular', variant: 'purple' },
+        { label: 'TypeScript', variant: 'blue' },
+        { label: 'Python', variant: 'primary' },
+        { label: 'FastAPI', variant: 'success' },
+        { label: 'Vertex AI', variant: 'orange' },
+        { label: 'GCP', variant: 'blue' },
+        { label: 'RAG Engine', variant: 'primary' },
+        { label: 'ECharts', variant: 'purple' },
+        { label: 'Arq. Hexagonal', variant: 'default' }
+      ],
+      order: 1
+    },
+    {
+      id: 2,
+      company: 'Newshore by Flyr',
+      role: 'Ingeniero de Software Avanzado UI',
+      period: 'Nov 2022 - Mar 2024',
+      location: 'Manizales, CO - Remoto',
+      description: 'Desarrollo y optimización de flujos críticos de usuario para la industria aerolínea y comercio electrónico de alto tráfico.',
+      achievements: [
+        'Check-in Avianca: Construcción y optimización del flujo de check-in de pasajeros, garantizando una UX de alto rendimiento a escala masiva.',
+        'Lógica de Pagos & POS: Desarrollo de scripts de validación para pagos divididos (split payments) con integridad transaccional.',
+        'Metabuscadores & Deeplinks: Construcción de sistemas de redirección masiva para mejorar conversión desde canales externos.',
+        'Stack Híbrido: Integración de interfaces en Angular + TypeScript con el CMS Umbraco (.NET).'
+      ],
+      technologies: [
+        { label: 'Angular', variant: 'purple' },
+        { label: 'TypeScript', variant: 'blue' },
+        { label: '.NET', variant: 'purple' },
+        { label: 'Umbraco', variant: 'default' },
+        { label: 'Integración POS', variant: 'primary' },
+        { label: 'Deeplinks', variant: 'orange' },
+        { label: 'RxJS', variant: 'purple' }
+      ],
+      order: 2
+    },
+    {
+      id: 3,
+      company: 'Geekcore',
+      role: 'Desarrollador Frontend Junior',
+      period: 'Feb 2022 - Sep 2022',
+      location: 'Bogotá, CO',
+      description: 'Maquetado y desarrollo de portales web corporativos y consumo de servicios RESTful.',
+      achievements: [
+        'Desarrollo de portales web interactivos utilizando React JS, Redux y Ant Design.',
+        'Consumo e integración de APIs REST y diseño modular de componentes UI.'
+      ],
+      technologies: [
+        { label: 'React', variant: 'blue' },
+        { label: 'Redux', variant: 'purple' },
+        { label: 'Ant Design', variant: 'default' },
+        { label: 'APIs REST', variant: 'success' },
+        { label: 'CSS3', variant: 'primary' },
+        { label: 'Git', variant: 'default' }
+      ],
+      order: 3
+    }
+  ],
+  en: [
+    {
+      id: 1,
+      company: 'Enovate',
+      role: 'Full-Stack Mid-Senior & AI Integration Developer',
+      period: 'Apr 2024 - Present',
+      location: 'Houston, USA - Remote',
+      description: 'Technical leadership and development of high-performance interfaces, industrial analytical dashboards, and autonomous AI agent platforms.',
+      achievements: [
+        'AI Agent Platform: Developed autonomous agents with Vertex AI (Gemini), RAG Engine, and Function Calling to query production data using natural language.',
+        'Oilfield Analytics Dashboard (W&T Offshore): Led the frontend architecture using React + ECharts to visualize real-time telemetry from offshore oil wells.',
+        'Platform Reengineering: Restructured core platform in Angular applying Clean Architecture (Hexagonal) for maximum scalability.',
+        'Internal Ecosystem & Leadership: Designed and published private NPM UI packages, mentored junior/mid developers, and established codebase standards.'
+      ],
+      technologies: [
+        { label: 'React', variant: 'blue' },
+        { label: 'Angular', variant: 'purple' },
+        { label: 'TypeScript', variant: 'blue' },
+        { label: 'Python', variant: 'primary' },
+        { label: 'FastAPI', variant: 'success' },
+        { label: 'Vertex AI', variant: 'orange' },
+        { label: 'GCP', variant: 'blue' },
+        { label: 'RAG Engine', variant: 'primary' },
+        { label: 'ECharts', variant: 'purple' },
+        { label: 'Hexagonal Arch.', variant: 'default' }
+      ],
+      order: 1
+    },
+    {
+      id: 2,
+      company: 'Newshore by Flyr',
+      role: 'Advanced UI Software Engineer',
+      period: 'Nov 2022 - Mar 2024',
+      location: 'Manizales, CO - Remote',
+      description: 'Development and optimization of critical user flows for the airline industry and high-traffic e-commerce.',
+      achievements: [
+        'Avianca Check-in: Built and optimized the passenger check-in flow, ensuring high performance at massive scale.',
+        'Payment Logic & POS: Developed validation scripts for split payments with transactional integrity.',
+        'Metasearch engines & Deeplinks: Built massive redirection systems to improve conversion from external channels.',
+        'Hybrid Stack: Integrated Angular + TypeScript interfaces with Umbraco CMS (.NET).'
+      ],
+      technologies: [
+        { label: 'Angular', variant: 'purple' },
+        { label: 'TypeScript', variant: 'blue' },
+        { label: '.NET', variant: 'purple' },
+        { label: 'Umbraco', variant: 'default' },
+        { label: 'POS Integration', variant: 'primary' },
+        { label: 'Deeplinks', variant: 'orange' },
+        { label: 'RxJS', variant: 'purple' }
+      ],
+      order: 2
+    },
+    {
+      id: 3,
+      company: 'Geekcore',
+      role: 'Junior Frontend Developer',
+      period: 'Feb 2022 - Sep 2022',
+      location: 'Bogotá, CO',
+      description: 'Layout and development of corporate web portals and consumption of RESTful services.',
+      achievements: [
+        'Developed interactive corporate web portals using React JS, Redux, and Ant Design.',
+        'Consumed and integrated REST APIs, establishing modular UI component design patterns.'
+      ],
+      technologies: [
+        { label: 'React', variant: 'blue' },
+        { label: 'Redux', variant: 'purple' },
+        { label: 'Ant Design', variant: 'default' },
+        { label: 'REST APIs', variant: 'success' },
+        { label: 'CSS3', variant: 'primary' },
+        { label: 'Git', variant: 'default' }
+      ],
+      order: 3
+    }
+  ]
+};
+
+/**
+ * Obtiene las experiencias estructuradas desde Strapi CMS.
+ */
+export async function getExperienceData(locale: SupportedLocale = 'es-CO'): Promise<Experience[]> {
+  const strapiLocale = locale === 'es-CO' ? 'es-CO' : 'en';
+  const fallback = FALLBACK_EXPERIENCE_DATA[locale];
+
+  try {
+    const url = `${STRAPI_API_URL}/experiences?populate=*&locale=${strapiLocale}&sort=order:asc`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.warn(`[Strapi API] No se pudo obtener datos de /experiences para locale=${strapiLocale}. Usando fallback.`);
+      return fallback;
+    }
+
+    const json = await response.json();
+
+    if (!json || !json.data) {
+      console.warn(`[Strapi API] Respuesta vacía de /experiences. Usando fallback.`);
+      return fallback;
+    }
+
+    return json.data.map((item: any) => {
+      const attributes = item.attributes ? item.attributes : item;
+      const id = item.id;
+      
+      // Parsear achievements de forma segura
+      let achievementsArray: string[] = [];
+      if (attributes.achievements) {
+        if (Array.isArray(attributes.achievements)) {
+          achievementsArray = attributes.achievements;
+        } else if (typeof attributes.achievements === 'string') {
+          try {
+            achievementsArray = JSON.parse(attributes.achievements);
+          } catch {
+            achievementsArray = [attributes.achievements];
+          }
+        }
+      }
+
+      return {
+        id: id,
+        company: attributes.company || '',
+        role: attributes.role || '',
+        period: attributes.period || '',
+        location: attributes.location || '',
+        description: attributes.description || '',
+        achievements: achievementsArray,
+        technologies: Array.isArray(attributes.technologies) ? attributes.technologies : [],
+        order: typeof attributes.order === 'number' ? attributes.order : 99
+      };
+    });
+  } catch (error) {
+    console.error(`[Strapi API Error] Excepción al obtener /experiences:`, error);
+    return fallback;
+  }
+}
+
+
 
