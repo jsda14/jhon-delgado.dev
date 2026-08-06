@@ -1,4 +1,4 @@
-
+import { useState } from 'react';
 import Navbar from '@/components/layout/Navbar/Navbar';
 import Footer from '@/components/layout/Footer/Footer';
 import Hero from '@/components/sections/Hero/Hero';
@@ -8,8 +8,14 @@ import Experience from '@/components/sections/Experience/Experience';
 import Stack from '@/components/sections/Stack/Stack';
 import Contact from '@/components/sections/Contact/Contact';
 import AIChatWidget from '@/components/widgets/AIChatWidget/AIChatWidget';
+import ContactModal from '@/components/ui/ContactModal/ContactModal';
 
 export function App() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
+
+  const handleOpenContact = () => setIsContactOpen(true);
+  const handleCloseContact = () => setIsContactOpen(false);
+
   return (
     <>
       <Navbar />
@@ -19,10 +25,11 @@ export function App() {
         <Projects />
         <Experience />
         <Stack />
-        <Contact />
+        <Contact onOpenContact={handleOpenContact} />
       </main>
-      <Footer />
+      <Footer onOpenContact={handleOpenContact} />
       <AIChatWidget />
+      <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
     </>
   );
 }

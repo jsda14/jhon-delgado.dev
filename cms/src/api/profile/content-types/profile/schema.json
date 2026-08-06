@@ -60,14 +60,21 @@
       },
       "required": true
     },
-    "resumePdf": {
-      "type": "string",
+    "cvPdf": {
+      "type": "media",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "required": true
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

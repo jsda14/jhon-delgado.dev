@@ -1,71 +1,84 @@
-
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import {
-  Layers,
-  FileCode2,
-  Palette,
-  Sparkles,
-  Cpu,
-  Terminal,
-  Bot,
-  Database,
-  Box,
-  Cloud,
-  GitBranch,
-  Wrench,
-  Accessibility,
-  CheckCircle
-} from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
-import { techStack } from '@/data/stack';
+import * as Icons from 'lucide-react';
 import Container from '@/components/layout/Container';
+import { useLocale } from '@/context/LocaleContext';
+import { getSkillsData } from '@/services/strapi';
+import type { Skill } from '@/services/strapi';
 import styles from './Stack.module.css';
 
-const iconMap: Record<string, LucideIcon> = {
-  React: Layers,
-  FileCode2: FileCode2,
-  Palette: Palette,
-  Sparkles: Sparkles,
-  Layers: Layers,
-  Cpu: Cpu,
-  Terminal: Terminal,
-  Bot: Bot,
-  Database: Database,
-  Container: Box,
-  Cloud: Cloud,
-  GitBranch: GitBranch,
-  Wrench: Wrench,
-  Accessibility: Accessibility,
-  CheckCircle: CheckCircle
+const TEXTS = {
+  'es-CO': {
+    eyebrow: 'Herramientas de trabajo',
+    title: <>Ecosistema<br />& Tech Stack</>,
+    categories: {
+      frontend: 'Desarrollo Frontend',
+      'backend-ai': 'IA e Integración Backend',
+      cloud: 'Nube y DevOps',
+      practices: 'Buenas Prácticas'
+    }
+  },
+  en: {
+    eyebrow: 'Core tech stack',
+    title: <>Ecosystem<br />& Tech Stack</>,
+    categories: {
+      frontend: 'Frontend Development',
+      'backend-ai': 'AI & Backend Integration',
+      cloud: 'Cloud & DevOps',
+      practices: 'Engineering Practices'
+    }
+  }
 };
 
 export function Stack() {
+  const { locale } = useLocale();
+  const [data, setData] = useState<Skill[] | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
+  useEffect(() => {
+    let isMounted = true;
+    getSkillsData().then(res => {
+      if (isMounted) {
+        setData(res);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [locale]);
+
+  const skillsList = data || [];
+  const t = TEXTS[locale] || TEXTS['es-CO'];
+
   const groups = [
-    { key: 'frontend', title: 'Frontend Development' },
-    { key: 'backend-ai', title: 'IA & Backend Integration' },
-    { key: 'cloud', title: 'Cloud & DevOps' },
-    { key: 'practices', title: 'Buenas Prácticas' }
+    { key: 'frontend' as const, title: t.categories.frontend },
+    { key: 'backend-ai' as const, title: t.categories['backend-ai'] },
+    { key: 'cloud' as const, title: t.categories.cloud },
+    { key: 'practices' as const, title: t.categories.practices }
   ];
 
   return (
     <section id="stack" className={styles.stack}>
       <Container>
         <div className={styles.stack__header}>
-          <span className={styles.stack__eyebrow}>Herramientas de trabajo</span>
-          <h2 className={styles.stack__title}>Ecosistema<br />& Tech Stack</h2>
+          <span className={styles.stack__eyebrow}>{t.eyebrow}</span>
+          <h2 className={styles.stack__title}>{t.title}</h2>
         </div>
 
         <div className={styles.stack__grid}>
           {groups.map((group) => {
-            const skills = techStack.filter(skill => skill.category === group.key);
+            const skills = skillsList
+              .filter(skill => skill.category === group.key)
+              .sort((a, b) => a.order - b.order);
+
             return (
               <div key={group.key} className={styles['stack-group']}>
                 <h3 className={styles['stack-group__title']}>{group.title}</h3>
                 <ul className={styles['stack-group__list']}>
                   {skills.map((skill) => {
-                    const IconComponent = iconMap[skill.iconName || 'Terminal'] || Terminal;
+                    // Cargar el icono dinámicamente usando el mapa general de lucide-react
+                    const IconComponent = (Icons as any)[skill.iconName] || Icons.Terminal;
+
                     return (
                       <li key={skill.id} className={styles['stack-item']}>
                         <div className={styles['stack-item__icon']}>

@@ -10,4 +10,8 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  server: {
+    host: true, // Listen on all network interfaces (0.0.0.0)
+    allowedHosts: true, // Bypass host header verification (allows all tunnel hosts)
+  },
 })
