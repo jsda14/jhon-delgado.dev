@@ -1,0 +1,33 @@
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: var(--clr-surface-2);
+  border: var(--border-thin) solid var(--clr-border);
+  padding: 0.25rem;
+  border-radius: var(--radius-full);
+}
+
+.switcher__btn {
+  background: none;
+  border: none;
+  color: var(--clr-text-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  min-height: 24px;
+  transition: background-color var(--t-fast), color var(--t-fast);
+}
+
+.switcher__btn:hover:not(.switcher__btn--active) {
+  color: var(--clr-text);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.switcher__btn--active {
+  background-color: var(--clr-copper);
+  color: var(--clr-bg);
+}

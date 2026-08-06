@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion, useReducedMotion } from 'framer-motion';
 import { ExternalLink, Github } from 'lucide-react';
 import { projects } from '@/data/projects';

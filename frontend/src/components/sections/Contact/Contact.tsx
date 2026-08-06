@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Linkedin, Github, Phone } from 'lucide-react';
 import Container from '@/components/layout/Container';
@@ -9,7 +8,7 @@ interface ContactMethod {
   title: string;
   value: string;
   href: string;
-  icon: React.ComponentType<{ size?: number }>;
+  icon: React.ComponentType<any>;
 }
 
 const contactMethods: ContactMethod[] = [

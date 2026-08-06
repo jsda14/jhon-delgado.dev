@@ -28,16 +28,6 @@ export function AIChatWidget() {
       scrollToBottom();
     }
   }, [messages, isOpen, isLoading]);
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const inputElement = e.currentTarget.querySelector('input');
-    if (inputElement && inputElement.value.trim()) {
-      sendMessage(inputElement.value);
-      inputElement.value = '';
-    }
-  };
-
   // We can manage input local state in presentation layer for value bindings
   const [inputValue, setInputValue] = useState('');
 

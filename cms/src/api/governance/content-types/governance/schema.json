@@ -1,0 +1,47 @@
+{
+  "kind": "singleType",
+  "collectionName": "governances",
+  "info": {
+    "singularName": "governance",
+    "pluralName": "governances",
+    "displayName": "Governance"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "badges": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.tag",
+      "repeatable": true
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion, useReducedMotion } from 'framer-motion';
 import { Bot, ShieldCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
@@ -26,7 +26,9 @@ export function AIWorkflow() {
           </div>
 
           <p className={styles['workflow-banner__desc']}>
-            Este portafolio ha sido maquetado y optimizado utilizando flujos de trabajo asistidos por agentes autónomos de Inteligencia Artificial (Agy y Claude Code). El desarrollo se rige estrictamente por directrices técnicas detalladas en `.specs/`, validación continua de tipado estricto con TypeScript, compilación limpia y una metodología de estilos BEM completamente modular.
+           Este portafolio fue construido con flujos de trabajo de desarrollo asistido por agentes autónomos de IA (Agy y Claude Code), bajo dirección técnica estricta del desarrollador. Cada decisión de arquitectura, componente y estilo fue auditada, validada y aprobada por el autor — los agentes ejecutan, el ingeniero gobierna.
+
+El stack refleja las mismas prácticas que aplico en producción: tipado estricto con TypeScript, arquitectura de componentes modular con CSS Modules y BEM, compilación limpia sin warnings, y revisión continua de calidad antes de cada commit.
           </p>
 
           <div className={styles['workflow-banner__badges']}>

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion, useReducedMotion } from 'framer-motion';
 import { experiences } from '@/data/experience';
 import { Badge } from '@/components/ui/Badge';

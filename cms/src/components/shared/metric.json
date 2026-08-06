@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_metrics",
+  "info": {
+    "displayName": "Metric",
+    "icon": "hashtag"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "variant": {
+      "type": "enumeration",
+      "default": "default",
+      "enum": [
+        "default",
+        "primary",
+        "warning",
+        "success",
+        "purple",
+        "orange"
+      ]
+    }
+  },
+  "config": {}
+}

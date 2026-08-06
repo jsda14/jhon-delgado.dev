@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import clsx from 'clsx';
 import Container from '@/components/layout/Container';
 import { useTheme } from '@/hooks/useTheme';
+import LanguageSwitcher from '@/components/common/LanguageSwitcher/LanguageSwitcher';
 import styles from './Navbar.module.css';
 
 export function Navbar() {
@@ -43,6 +44,8 @@ export function Navbar() {
           </ul>
 
           <div className={styles.navbar__controls}>
+            <LanguageSwitcher />
+
             <button
               className={styles.navbar__theme}
               onClick={toggle}

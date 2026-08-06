@@ -1,7 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 import Container from '@/components/layout/Container';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Download } from 'lucide-react';
+import { useLocale } from '@/context/LocaleContext';
+import { getHeroData, getStrapiMediaUrl } from '@/services/strapi';
+import type { HeroData } from '@/services/strapi';
 import styles from './Hero.module.css';
 
 function RadarDecoration() {
@@ -53,9 +57,6 @@ function RadarDecoration() {
 
       /* Sweep */
       const sweepLen = Math.PI * 0.55;
-      const grad = ctx.createConicalGradient
-        ? null
-        : null;
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(angle);
@@ -122,7 +123,39 @@ function RadarDecoration() {
 }
 
 export function Hero() {
+  const { locale } = useLocale();
+  const [data, setData] = useState<HeroData | null>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    let isMounted = true;
+    getHeroData(locale).then(res => {
+      if (isMounted) {
+        setData(res);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [locale]);
+
+  // Objeto de respaldo (fallback) en caso de que Strapi esté offline
+  const currentData: HeroData = data || {
+    eyebrowText: locale === 'es-CO' ? 'Disponible para proyectos' : 'Available for projects',
+    eyebrowStatus: 'available',
+    titleFirst: 'Jhon',
+    titleEmphasis: 'Delgado',
+    role: 'Full-Stack & AI Integration Engineer',
+    subtitle: locale === 'es-CO'
+      ? 'Más de 4 años construyendo interfaces de alto rendimiento, arquitecturas backend robustas y agentes autónomos con Inteligencia Artificial — en producción, no en demos.'
+      : 'More than 4 years building high-performance interfaces, robust backend architectures, and autonomous AI agents — in production, not in demos.',
+    primaryBtnText: locale === 'es-CO' ? 'Ver proyectos' : 'View projects',
+    cvFile: locale === 'es-CO' ? '/cv.pdf' : '/cv-en.pdf',
+    metaItems: [
+      { label: locale === 'es-CO' ? 'Base' : 'Base', value: locale === 'es-CO' ? 'Colombia · Remoto' : 'Colombia · Remote' },
+      { label: locale === 'es-CO' ? 'Cliente actual' : 'Current client', value: 'Enovate, Houston TX' }
+    ]
+  };
 
   const container = {
     hidden: {},
@@ -131,7 +164,14 @@ export function Hero() {
 
   const item = {
     hidden:  { opacity: 0, y: shouldReduceMotion ? 0 : 18 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        duration: 0.65, 
+        ease: [0.16, 1, 0.3, 1] as const 
+      } 
+    },
   };
 
   return (
@@ -146,22 +186,27 @@ export function Hero() {
             animate="visible"
           >
             <motion.span className={styles.hero__eyebrow} variants={item}>
-              <span className={styles['hero__eyebrow-dot']} aria-hidden="true" />
-              Disponible para proyectos
+              <span 
+                className={clsx(
+                  styles['hero__eyebrow-dot'], 
+                  styles[`hero__eyebrow-dot--${currentData.eyebrowStatus}`]
+                )} 
+                aria-hidden="true" 
+              />
+              {currentData.eyebrowText}
             </motion.span>
 
             <motion.h1 className={styles.hero__title} variants={item}>
-              Jhon<br />
-              <em className={styles['hero__title-em']}>Delgado</em>
+              {currentData.titleFirst}<br />
+              <em className={styles['hero__title-em']}>{currentData.titleEmphasis}</em>
             </motion.h1>
 
             <motion.p className={styles.hero__role} variants={item}>
-              Full-Stack & AI Integration Engineer
+              {currentData.role}
             </motion.p>
 
             <motion.p className={styles.hero__subtitle} variants={item}>
-              Más de 4 años construyendo interfaces de alto rendimiento, arquitecturas backend robustas
-              y agentes autónomos con Inteligencia Artificial — en producción, no en demos.
+              {currentData.subtitle}
             </motion.p>
 
             <motion.div className={styles.hero__actions} variants={item}>
@@ -169,29 +214,31 @@ export function Hero() {
                 onClick={() => document.getElementById('proyectos')?.scrollIntoView({ behavior: 'smooth' })}
                 className={`${styles.hero__btn} ${styles['hero__btn--primary']}`}
               >
-                <span>Ver proyectos</span>
+                <span>{currentData.primaryBtnText}</span>
                 <ArrowRight size={15} />
               </button>
               <a
-                href="/cv.pdf"
+                href={getStrapiMediaUrl(currentData.cvFile)}
+                target="_blank"
+                rel="noopener noreferrer"
                 download
                 className={`${styles.hero__btn} ${styles['hero__btn--ghost']}`}
               >
                 <Download size={15} />
-                <span>Descargar CV</span>
+                <span>{locale === 'es-CO' ? 'Descargar CV' : 'Download CV'}</span>
               </a>
             </motion.div>
 
             <motion.div className={styles.hero__meta} variants={item}>
-              <span className={styles['hero__meta-item']}>
-                <span className={styles['hero__meta-label']}>Base</span>
-                Colombia · Remoto
-              </span>
-              <span className={styles['hero__meta-sep']} aria-hidden="true">·</span>
-              <span className={styles['hero__meta-item']}>
-                <span className={styles['hero__meta-label']}>Cliente actual</span>
-                Enovate, Houston TX
-              </span>
+              {currentData.metaItems.map((meta, idx) => (
+                <React.Fragment key={meta.id || idx}>
+                  {idx > 0 && <span className={styles['hero__meta-sep']} aria-hidden="true">·</span>}
+                  <span className={styles['hero__meta-item']}>
+                    <span className={styles['hero__meta-label']}>{meta.label}</span>
+                    {meta.value}
+                  </span>
+                </React.Fragment>
+              ))}
             </motion.div>
           </motion.div>
 
@@ -200,13 +247,17 @@ export function Hero() {
             className={styles.hero__visual}
             initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ 
+              duration: 0.8, 
+              delay: 0.3, 
+              ease: [0.16, 1, 0.3, 1] as const 
+            }}
             aria-hidden="true"
           >
             <RadarDecoration />
             <span className={styles['hero__visual-label']}>
               <span className={styles['hero__visual-label-dot']} />
-              Sistema activo
+              {locale === 'es-CO' ? 'Sistema activo' : 'System online'}
             </span>
           </motion.div>
         </div>

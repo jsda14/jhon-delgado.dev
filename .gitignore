@@ -29,3 +29,10 @@ __pycache__/
 .venv/
 venv/
 .env
+
+# Strapi CMS
+cms/.cache/
+cms/build/
+cms/.tmp/
+cms/node_modules/
+cms/.env

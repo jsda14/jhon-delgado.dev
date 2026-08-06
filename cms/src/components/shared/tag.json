@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_shared_tags",
+  "info": {
+    "displayName": "Tag",
+    "icon": "code"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "variant": {
+      "type": "enumeration",
+      "default": "default",
+      "enum": [
+        "default",
+        "primary",
+        "warning",
+        "success",
+        "purple",
+        "orange"
+      ]
+    }
+  },
+  "config": {}
+}

@@ -59,7 +59,6 @@
   background-color: var(--clr-copper-soft);
   width: fit-content;
 }
-
 .hero__eyebrow-dot {
   width: 6px;
   height: 6px;
@@ -69,6 +68,20 @@
   flex-shrink: 0;
 }
 
+.hero__eyebrow-dot--available {
+  background-color: var(--clr-success);
+  box-shadow: 0 0 8px var(--clr-success);
+}
+
+.hero__eyebrow-dot--busy {
+  background-color: #EF4444;
+  box-shadow: 0 0 8px #EF4444;
+}
+
+.hero__eyebrow-dot--open-to-work {
+  background-color: var(--clr-info);
+  box-shadow: 0 0 8px var(--clr-info);
+}
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.5; transform: scale(0.75); }
