@@ -226,72 +226,8 @@ export interface Project {
  order: number;
 }
 
-const PORTFOLIO_PROJECT: Record<SupportedLocale, Project> = {
- 'es-CO': {
-  id: 'portfolio-ecosystem',
-  title: 'Ecosistema Portafolio Cloud-Native & AI-Twin',
-  description: 'Arquitectura desacoplada de alto rendimiento servida en el Edge (Cloudflare Workers CDN). Backend headless con Strapi v5 y PostgreSQL autogestionado en una VM Debian de Google Cloud (Nginx reverse proxy + PM2). Capa de inteligencia autónoma serverless con FastAPI y Docker en Google Cloud Run (escalado a cero) conectada a la API de Gemini. Costo total de infraestructura: $12.20 USD anuales (dominio).',
-  technologies: [
-   { label: 'GCP Linux VM', variant: 'blue' },
-   { label: 'Google Cloud Run', variant: 'blue' },
-   { label: 'Docker', variant: 'primary' },
-   { label: 'Cloudflare Edge', variant: 'orange' },
-   { label: 'Strapi v5', variant: 'purple' },
-   { label: 'FastAPI', variant: 'success' },
-   { label: 'Gemini AI', variant: 'warning' },
-   { label: 'FinOps', variant: 'default' }
-  ],
-  highlights: [
-   'Edge CDN global y caché persistente con Cloudflare Workers',
-   'FastAPI en Cloud Run con escalado a cero (zero-idle costs)',
-   'Strapi v5 y PostgreSQL autogestionados en GCP Compute Engine'
-  ],
-  metrics: [
-   { value: '$12.20', label: 'Costo Anual' },
-   { value: '0ms', label: 'Cold Start Edge' },
-   { value: '100%', label: 'Serverless AI' }
-  ],
-  demoUrl: 'https://jhon-delgado.dev',
-  demoLabel: 'Live Portfolio',
-  githubUrl: 'https://github.com/jsda14/jhon-delgado.dev',
-  featured: true,
-  order: 0
- },
- en: {
-  id: 'portfolio-ecosystem',
-  title: 'Cloud-Native Portfolio & AI-Twin Ecosystem',
-  description: 'High-performance decoupled architecture served at the Edge (Cloudflare Workers CDN). Headless backend powered by Strapi v5 & PostgreSQL self-hosted on a Google Cloud Debian VM (Nginx reverse proxy + PM2). Autonomous serverless AI layer using FastAPI & Docker on Google Cloud Run (scale-to-zero) integrated with Gemini API. Total annual infrastructure cost: $12.20 USD (domain only).',
-  technologies: [
-   { label: 'GCP Linux VM', variant: 'blue' },
-   { label: 'Google Cloud Run', variant: 'blue' },
-   { label: 'Docker', variant: 'primary' },
-   { label: 'Cloudflare Edge', variant: 'orange' },
-   { label: 'Strapi v5', variant: 'purple' },
-   { label: 'FastAPI', variant: 'success' },
-   { label: 'Gemini AI', variant: 'warning' },
-   { label: 'FinOps', variant: 'default' }
-  ],
-  highlights: [
-   'Global Edge CDN & cached responses using Cloudflare Workers',
-   'FastAPI on Cloud Run with auto-scale-to-zero (zero-idle costs)',
-   'Self-hosted Strapi v5 & PostgreSQL on GCP Compute Engine'
-  ],
-  metrics: [
-   { value: '$12.20', label: 'Annual Cost' },
-   { value: '0ms', label: 'Edge Cold Start' },
-   { value: '100%', label: 'Serverless AI' }
-  ],
-  demoUrl: 'https://jhon-delgado.dev',
-  demoLabel: 'Live Portfolio',
-  githubUrl: 'https://github.com/jsda14/jhon-delgado.dev',
-  featured: true,
-  order: 0
- }
-};
-
 const FALLBACK_PROJECTS_DATA: Record<SupportedLocale, Project[]> = {
  'es-CO': [
-  PORTFOLIO_PROJECT['es-CO'],
   {
    id: 1,
    title: 'Aluna Tyquy',
@@ -344,7 +280,6 @@ const FALLBACK_PROJECTS_DATA: Record<SupportedLocale, Project[]> = {
   }
  ],
  en: [
-  PORTFOLIO_PROJECT['en'],
   {
    id: 1,
    title: 'Aluna Tyquy',
@@ -455,7 +390,7 @@ export async function getProjectsData(locale: SupportedLocale = 'es-CO'): Promis
    };
   });
 
-  return [PORTFOLIO_PROJECT[locale], ...strapiProjects];
+  return strapiProjects;
  } catch (error) {
   console.error(`[Strapi API Error] Excepción al obtener /projects:`, error);
   return fallback;
