@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import clsx from 'clsx';
 import styles from './Tag.module.css';
 
@@ -24,7 +24,7 @@ export function Tag({
   children
 }: TagProps) {
   // Advertencia preventiva en desarrollo ante variantes no soportadas
-  if (process.env.NODE_ENV !== 'production' && !(variant in variantClasses)) {
+  if (import.meta.env.MODE !== 'production' && !(variant in variantClasses)) {
     console.warn(`[Design System Warning] La variante de Tag "${variant}" no está soportada oficialmente.`);
   }
 

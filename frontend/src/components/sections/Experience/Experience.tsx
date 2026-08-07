@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import Container from '@/components/layout/Container';
 import { useLocale } from '@/context/LocaleContext';
 import { getExperienceData } from '@/services/strapi';
-import type { Experience } from '@/services/strapi';
+import type { Experience as ExperienceType } from '@/services/strapi';
 import Tag from '@/components/common/Tag/Tag';
 import styles from './Experience.module.css';
 
@@ -20,7 +20,7 @@ const TEXTS = {
 
 export function Experience() {
   const { locale } = useLocale();
-  const [data, setData] = useState<Experience[] | null>(null);
+  const [data, setData] = useState<ExperienceType[] | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
