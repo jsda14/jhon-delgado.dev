@@ -11,12 +11,14 @@ export interface ChatMessagePayload {
  * @param history El historial previo de la conversación estructurado para Gemini.
  * @returns La respuesta en texto devuelta por la IA.
  */
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 export async function sendChatMessage(
   message: string,
   history?: ChatMessagePayload[]
 ): Promise<string> {
   try {
-    const response = await fetch('http://localhost:8000/api/chat', {
+    const response = await fetch(`${BACKEND_URL}/api/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
