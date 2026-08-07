@@ -15,7 +15,8 @@ export interface ChatMessagePayload {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
 export async function sendChatMessage(
   message: string,
-  history?: ChatMessagePayload[]
+  history?: ChatMessagePayload[],
+  locale?: string
 ): Promise<string> {
   try {
     const response = await fetch(`${BACKEND_URL}/api/chat`, {
@@ -26,6 +27,7 @@ export async function sendChatMessage(
       body: JSON.stringify({
         message,
         history,
+        locale,
       }),
     });
 

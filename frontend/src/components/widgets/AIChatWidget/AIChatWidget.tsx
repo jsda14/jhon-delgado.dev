@@ -5,17 +5,42 @@ import clsx from 'clsx';
 import ReactMarkdown from 'react-markdown';
 import { useAIChat } from '@/hooks/useAIChat';
 import styles from './AIChatWidget.module.css';
+import { useLocale } from '@/context/LocaleContext';
 
-const FAQ_SUGGESTIONS = [
-  '¿Qué estándares de código sigues?',
-  '¿Cómo funciona la gobernanza de IA?',
-  'Háblame de los proyectos.'
-];
+const WIDGET_TEXTS = {
+  'es-CO': {
+    triggerAria: "Abrir chat del gemelo digital de IA",
+    closeAria: "Cerrar chat modal",
+    sendAria: "Enviar mensaje a la IA",
+    placeholder: "Escribe una pregunta sobre la experiencia de Jhon...",
+    typing: "Escribiendo respuesta...",
+    suggestions: [
+      "¿Cuál es su stack principal?",
+      "¿Qué experiencia tiene en IA?",
+      "Ver información de contacto"
+    ]
+  },
+  en: {
+    triggerAria: "Open AI digital twin chat",
+    closeAria: "Close chat modal",
+    sendAria: "Send message to AI",
+    placeholder: "Ask a question about Jhon's background...",
+    typing: "Typing response...",
+    suggestions: [
+      "What is his core stack?",
+      "AI & LLM experience?",
+      "Get contact info"
+    ]
+  }
+};
 
 export function AIChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const { messages, isLoading, messagesEndRef, sendMessage } = useAIChat();
   const shouldReduceMotion = useReducedMotion();
+  const { locale } = useLocale();
+
+  const t = WIDGET_TEXTS[locale] || WIDGET_TEXTS['es-CO'];
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -28,7 +53,7 @@ export function AIChatWidget() {
       scrollToBottom();
     }
   }, [messages, isOpen, isLoading]);
-  // We can manage input local state in presentation layer for value bindings
+
   const [inputValue, setInputValue] = useState('');
 
   const handleInputSubmit = (e: React.FormEvent) => {
@@ -60,7 +85,7 @@ export function AIChatWidget() {
       <button
         onClick={toggleMenu}
         className={styles['chat-widget__trigger']}
-        aria-label="Abrir chat del gemelo digital de IA"
+        aria-label={t.triggerAria}
       >
         <MessageSquare size={22} />
       </button>
@@ -89,7 +114,7 @@ export function AIChatWidget() {
               <button
                 onClick={() => setIsOpen(false)}
                 className={styles['chat-widget__close']}
-                aria-label="Cerrar chat modal"
+                aria-label={t.closeAria}
               >
                 <X size={18} />
               </button>
@@ -116,7 +141,7 @@ export function AIChatWidget() {
               ))}
               {isLoading && (
                 <div className={styles['chat-widget__loading']}>
-                  <span>Escribiendo</span>
+                  <span>{t.typing}</span>
                   <div className={styles['chat-widget__loading-dots']}>
                     <span className={styles['chat-widget__loading-dot']} />
                     <span className={styles['chat-widget__loading-dot']} />
@@ -129,7 +154,7 @@ export function AIChatWidget() {
 
             {/* Quick Suggestions */}
             <div className={styles['chat-widget__suggestions']}>
-              {FAQ_SUGGESTIONS.map(suggestion => (
+              {t.suggestions.map(suggestion => (
                 <button
                   key={suggestion}
                   onClick={() => sendMessage(suggestion)}
@@ -147,7 +172,7 @@ export function AIChatWidget() {
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Escribe tu mensaje técnico..."
+                placeholder={t.placeholder}
                 disabled={isLoading}
                 className={styles['chat-widget__input']}
               />
@@ -155,7 +180,7 @@ export function AIChatWidget() {
                 type="submit"
                 disabled={!inputValue.trim() || isLoading}
                 className={styles['chat-widget__send-btn']}
-                aria-label="Enviar mensaje a la IA"
+                aria-label={t.sendAria}
               >
                 <Send size={16} />
               </button>

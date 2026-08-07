@@ -33,7 +33,8 @@ async def chat_endpoint(request: ChatRequest):
     try:
         reply = ai_service.generate_chat_response(
             message=request.message,
-            history=request.history
+            history=request.history,
+            locale=request.locale
         )
         return ChatResponse(reply=reply)
     except Exception as e:
